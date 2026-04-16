@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bridge-economics-dashboard
+  namespace: bridge-service-stack
+  labels:
+    app.kubernetes.io/name: bridge-economics-dashboard
+    app.kubernetes.io/part-of: bridge-platform
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bridge-economics-dashboard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: bridge-economics-dashboard
+    spec:
+      containers:
+        - name: nginx
+          image: harbor.binari.digital/bridge-economics-dashboard/bridge-economics-dashboard:v0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: http
+          readinessProbe:
+            httpGet: { path: /, port: http }
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /, port: http }
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            requests: { cpu: 10m, memory: 32Mi }
+            limits:   { cpu: 200m, memory: 128Mi }
+      imagePullSecrets:
+        - name: harbor-pull-bridge-economics-dashboard
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bridge-economics-dashboard
+  namespace: bridge-service-stack
+  labels:
+    app.kubernetes.io/name: bridge-economics-dashboard
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: bridge-economics-dashboard
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bridge-economics-dashboard
+  namespace: bridge-service-stack
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - economics.service.d.bridgeintelligence.ltd
+      secretName: bridge-economics-dashboard-tls
+  rules:
+    - host: economics.service.d.bridgeintelligence.ltd
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bridge-economics-dashboard
+                port:
+                  number: 80
