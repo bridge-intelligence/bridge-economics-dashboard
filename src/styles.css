@@ -1,0 +1,56 @@
+:root {
+  --bg: #0b0f17;
+  --card: #141a25;
+  --border: #1f2937;
+  --fg: #e6eaf2;
+  --muted: #8b94a5;
+  --accent: #4aa3ff;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --danger: #f87171;
+  --tag-stablecoin: #a5f3fc;
+  --tag-commodity: #fcd34d;
+  --tag-crypto: #c4b5fd;
+  --tag-listed: #86efac;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+main.dashboard { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+.header { display: flex; align-items: center; gap: 24px; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.logo { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; background: linear-gradient(90deg, #4aa3ff, #c4b5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.subtitle { color: var(--muted); font-size: 14px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+.card-title { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.card-value { font-size: 32px; font-weight: 700; line-height: 1; }
+.card-subtitle { color: var(--muted); font-size: 12px; margin-top: 8px; }
+
+.asset-table { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 32px; }
+.asset-table h2 { margin: 0 0 16px; font-size: 18px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 500; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+td.mono { font-family: ui-monospace, Menlo, monospace; }
+td.bold { font-weight: 600; }
+td.right { text-align: right; }
+.muted { color: var(--muted); }
+
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; background: rgba(255,255,255,0.05); }
+.tag-stablecoin { color: var(--tag-stablecoin); border: 1px solid var(--tag-stablecoin); }
+.tag-commodity { color: var(--tag-commodity); border: 1px solid var(--tag-commodity); }
+.tag-crypto_proxy { color: var(--tag-crypto); border: 1px solid var(--tag-crypto); }
+.tag-listed_native { color: var(--tag-listed); border: 1px solid var(--tag-listed); }
+.tag-active { color: var(--ok); border: 1px solid var(--ok); }
+.tag-listed { color: var(--accent); border: 1px solid var(--accent); }
+.tag-pending { color: var(--warn); border: 1px solid var(--warn); }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
+.error { color: var(--danger); }
